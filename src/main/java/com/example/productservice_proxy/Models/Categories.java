@@ -1,10 +1,16 @@
 package com.example.productservice_proxy.Models;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
+@Getter
+@Setter
+@ToString
 public class Categories extends BaseModel {
 
-    private String nam;
+    private String name;
     private String catDescription;
     private List<Products> productList;
 }

@@ -1,6 +1,7 @@
-package com.example.productservice_proxy.dtos;
+package com.example.productservice_proxy.Clients.Fakestoreclient;
 
-import com.example.productservice_proxy.Models.Categories;
+import com.example.productservice_proxy.Clients.IclientProductsDto;
+import com.example.productservice_proxy.dtos.RatingDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Productdto {
+public class FakestoreProductDto implements IclientProductsDto {
     private Long id;
     private String title;
     private double price;
