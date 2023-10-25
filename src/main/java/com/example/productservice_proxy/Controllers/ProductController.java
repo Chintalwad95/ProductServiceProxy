@@ -1,5 +1,6 @@
 package com.example.productservice_proxy.Controllers;
 
+import com.example.productservice_proxy.Clients.Fakestoreclient.FakestoreProductDto;
 import com.example.productservice_proxy.Clients.IclientProductsDto;
 import com.example.productservice_proxy.Models.Categories;
 import com.example.productservice_proxy.Models.Products;
@@ -26,6 +27,7 @@ public class ProductController {
     }
     @GetMapping("")
     public List<Products> GetProducts(){
+
         return this.productService.getAllProducts();
     }
     @GetMapping ("/{id}")
@@ -52,8 +54,11 @@ public class ProductController {
 
     }
     @PostMapping ()
-    public ResponseEntity<Products> addNewProduct(@RequestBody IclientProductsDto productdto){
-        return new ResponseEntity<>(this.productService.addNewProduct(productdto),HttpStatus.OK);
+    public ResponseEntity<Products> addNewProduct(@RequestBody Productdto productdto){
+        Products products = getProduct(productdto);
+        Products savedProduct = this.productService.addNewProduct(products);
+        ResponseEntity<Products> responseEntity =  new ResponseEntity<>(savedProduct,HttpStatus.OK);
+        return responseEntity;
     }
     @PutMapping  ("/{Productid}")
     public Products updateProduct(@PathVariable("Productid") Long productid, @RequestBody Productdto productdto){
@@ -77,5 +82,17 @@ public class ProductController {
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<String> handleException(Exception e){
         return new ResponseEntity<>("Kuch to phata hai re baba in controller", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    private static Products getProduct(Productdto productdto) {
+        Products products = new Products();
+        products.setTitle(productdto.getTitle());
+        products.setPrice(products.getPrice());
+        products.setId(productdto.getId());
+        Categories category = new Categories();
+        category.setName(productdto.getCategory());
+        products.setCategory(category);
+        products.setImageUrl(productdto.getImageUrl());
+        products.setProdDescription(productdto.getDescription());
+        return products;
     }
 }
