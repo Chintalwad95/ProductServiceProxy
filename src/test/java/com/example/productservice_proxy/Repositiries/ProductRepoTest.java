@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 
@@ -19,6 +20,29 @@ class ProductRepoTest {
 
     @Test
     @Transactional
+    void saveProductAndCategory4() {
+
+       //Products products = productRepo.findById(152L);
+        //List<Products> products = productRepo.findByTitle("Iphone 13");
+        //List<Products> products = productRepo.findAllByIdIsBetween(150L,1102L);
+        List<Products> products = productRepo.findAllByDeletedIsFalse();
+       System.out.println("Debug");
+        }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    void saveProductAndCategory3() {
+
+        Categories categories = categoryRepo.findById(802L);
+        List<Products> products = categories.getProductList();
+        for(Products product:products){
+            System.out.println(product.getTitle());
+        }
+    }
+    @Test
+    @Transactional
+    @Rollback(value = false)
     void saveProductAndCategory2() {
 
         Categories categories = new Categories();
@@ -32,7 +56,7 @@ class ProductRepoTest {
         products.setProdDescription("Tshirt");
         products.setCategory(categories);
         productRepo.save(products);
-
+        System.out.println("Debug");
     }
     @Test
     @Transactional
