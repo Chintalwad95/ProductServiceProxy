@@ -25,7 +25,7 @@ class ProductRepoTest {
        //Products products = productRepo.findById(152L);
         //List<Products> products = productRepo.findByTitle("Iphone 13");
         //List<Products> products = productRepo.findAllByIdIsBetween(150L,1102L);
-        List<Products> products = productRepo.findAllByDeletedIsFalse();
+       // List<Products> products = productRepo.findAllByDeletedIsFalse();
        System.out.println("Debug");
         }
 

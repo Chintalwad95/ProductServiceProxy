@@ -12,7 +12,7 @@ public interface ProductRepo extends JpaRepository<Products,Long> {
    Products save(Products product);
 
    Products findById(long id);
-   List<Products> findByTitle(String title);
-    List<Products> findAllByIdIsBetween(long id1,long id2);
-    List<Products> findAllByDeletedIsFalse();
+   //List<Products> findByTitle(String title);
+    //List<Products> findAllByIdIsBetween(long id1,long id2);
+    //List<Products> findAllByDeletedIsFalse();
 }
