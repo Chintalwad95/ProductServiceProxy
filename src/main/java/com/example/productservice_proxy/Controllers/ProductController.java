@@ -4,17 +4,22 @@ import com.example.productservice_proxy.Clients.Fakestoreclient.FakestoreProduct
 import com.example.productservice_proxy.Clients.IclientProductsDto;
 import com.example.productservice_proxy.Models.Categories;
 import com.example.productservice_proxy.Models.Products;
+import com.example.productservice_proxy.Security.JwtObject;
+import com.example.productservice_proxy.Security.TokenValidator;
 import com.example.productservice_proxy.Services.IProductService;
 import com.example.productservice_proxy.dtos.Productdto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping ("/products")
@@ -31,15 +36,27 @@ public class ProductController {
         return this.productService.getAllProducts();
     }
     @GetMapping ("/{id}")
-    public ResponseEntity<Products> getProductDetails(@PathVariable("id") Long id){
+    public ResponseEntity<Products> getProductDetails(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String AuthToken, @PathVariable("id") Long id){
         try
-        {
+        {   JwtObject jwtObject = null;
+            if(AuthToken != null) {
+                Optional<JwtObject> jwtObjectOptional = TokenValidator.validateToken(AuthToken);
+                if(jwtObjectOptional.isEmpty()) {
+                    // throw exception
+                }
+            jwtObject = jwtObjectOptional.get();
+
+            }
+
+
             MultiValueMap<String,String> header = new LinkedMultiValueMap<>();
             header.add("contents", "Kuch bhi");
             header.add("Auth-token", "Shubham hai na");
             if(id < 1) {
                 throw new IllegalArgumentException("Invalid ID");
             }
+        //    Products product = this.productService.getSingleProduct(id,jwtObject);
+        // Line no 58 can be used for further more role validation in the product service for a user.
             Products product = this.productService.getSingleProduct(id);
             ResponseEntity<Products> responseEntity = new ResponseEntity<>(product,header,HttpStatus.OK);
             return responseEntity;
